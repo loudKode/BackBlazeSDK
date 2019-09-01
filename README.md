@@ -2,7 +2,10 @@
 .NET API Library for BackBlaze.com
 
 
-`Download:`[https://github.com/loudKode/BackBlazeSDK/releases](https://github.com/loudKode/BackBlazeSDK/releases)
+`Download:`[https://github.com/loudKode/BackBlazeSDK/releases](https://github.com/loudKode/BackBlazeSDK/releases)<br>
+`NuGet:`
+[![NuGet](https://img.shields.io/nuget/v/DeQmaTech.BackBlazeSDK.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/DeQmaTech.BackBlazeSDK)<br>
+
 # Functions:
 [https://github.com/loudKode/BackBlazeSDK/blob/master/IClient.cs](https://github.com/loudKode/BackBlazeSDK/blob/master/IClient.cs)
 
