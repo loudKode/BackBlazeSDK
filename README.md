@@ -4,27 +4,12 @@
 
 `Download:`[https://github.com/loudKode/BackBlazeSDK/releases](https://github.com/loudKode/BackBlazeSDK/releases)
 # Functions:
-```vb.net
-    Function ListBuckets(AccountID As String, Optional bucketTypes As BBZutilities.BucketTypesEnum = Nothing) As Task(Of JSON_ListBuckets)
-    Function List(DestinationBucketID As String, Optional StartWith As String = Nothing, Optional Contains As String = Nothing, Optional DelimiterMark As String = "/", Optional Limit As Integer = 999) As Task(Of JSON_List)
-    Function Upload(FileToUpload As Object, UploadType As BClient.UploadTypes, DestinationBucketID As String, FileName As String, Optional ReportCls As IProgress(Of ReportStatus) = Nothing, Optional _proxi As ProxyConfig = Nothing, Optional token As Threading.CancellationToken = Nothing) As Task(Of JSON_FileMetadata)
-    Function FileMetadata(DestinationFileID As String) As Task(Of JSON_FileMetadata)
-    Function DeleteBucket(AccountID As String, DestinationBucketID As String) As Task(Of JSON_BucketMetadata)
-    Function CreateBucket(AccountID As String, BucketName As String, BucketType As BBZutilities.BucketTypesEnum) As Task(Of JSON_BucketMetadata)
-    Function CopyFile(SorceFileID As String, DestinationBucketID As String, RenameTo As String) As Task(Of JSON_FileMetadata)
-    Function DeleteFile(DestinationFileID As String, DestinationFileName As String) As Task(Of Boolean)
-    Function UpdateBucket(AccountID As String, DestinationBucketID As String, BucketType As BBZutilities.BucketTypesEnum) As Task(Of JSON_BucketMetadata)
-    Function PublicBucket_DownloadFile(DestinationFileID As String, FileSaveDir As String, FileName As String, Optional ReportCls As IProgress(Of ReportStatus) = Nothing, Optional _proxi As ProxyConfig = Nothing, Optional TimeOut As Integer = 60, Optional token As Threading.CancellationToken = Nothing) As Task
-    Function PublicBucket_DownloadFileAsStream(DestinationFileID As String, Optional ReportCls As IProgress(Of ReportStatus) = Nothing, Optional _proxi As ProxyConfig = Nothing, Optional TimeOut As Integer = 60, Optional token As Threading.CancellationToken = Nothing) As Task(Of IO.Stream)
-    Function PrivateBucket_DownloadFile(DestinationFileID As String, FileSaveDir As String, FileName As String, Optional ReportCls As IProgress(Of ReportStatus) = Nothing, Optional _proxi As ProxyConfig = Nothing, Optional TimeOut As Integer = 60, Optional token As Threading.CancellationToken = Nothing) As Task
-    Function PrivateBucket_DownloadFileAsStream(DestinationFileID As String, Optional ReportCls As IProgress(Of ReportStatus) = Nothing, Optional _proxi As ProxyConfig = Nothing, Optional TimeOut As Integer = 60, Optional token As Threading.CancellationToken = Nothing) As Task(Of IO.Stream)
-    Function PublicBucket_GenerateDownloadUrl(downloadApiUrl As String, BucketName As String, FileName As String) As String
-```
+[https://github.com/loudKode/BackBlazeSDK/blob/master/IClient.cs](https://github.com/loudKode/BackBlazeSDK/blob/master/IClient.cs)
 
 # Example:
 ```vb.net
+Dim tkn = Await BackBlazeSDK.GetToken.GetToken_24Hrs("xxxxxxxxx", "xxxxxxx")
 Dim cLENT As BackBlazeSDK.IClient = New BackBlazeSDK.BClient("https://api002.backblazeb2.com", "xxxxxxxxxxxx")
-Dim RSLT = Await BackBlazeSDK.GetToken.GetToken_24Hrs("xxxxxxxxx", "xxxxxxx")
 Dim RSLT = Await cLENT.List(xxxxxxxxxx)
 Dim RSLT = Await cLENT.ListBuckets("xxxxxxxxx")
 Dim RSLT = Await cLENT.CreateBucket("xxxxxxx", "tztbukt", BackBlazeSDK.BBZutilities.BucketTypesEnum.allPublic)
