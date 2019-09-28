@@ -14,6 +14,7 @@
 * Proxy Support
 * Upload/Download cancellation support
 
+
 # Functions:
 * ListBuckets
 * List
@@ -34,11 +35,16 @@
 # Example:
 **get token**
 ```vb.net
-Dim tkn = Await BackBlazeSDK.GetToken.GetToken_24Hrs("xxxxxxxxx", "xxxxxxx")
+Dim tkn = Await BackBlazeSDK.GetToken.GetToken_24Hrs("Key_ID", "Application_Key")
 ```
 **set client**
 ```vb.net
 Dim cLENT As BackBlazeSDK.IClient = New BackBlazeSDK.BClient(tkn.apiUrl, tkn.authorizationToken)
+```
+**set client with proxy**
+```vb.net
+Dim roxy = New BackBlazeSDK.ProxyConfig With {.ProxyIP = "172.0.0.0", .ProxyPort = 80, .ProxyUsername = "myname", .ProxyPassword = "myPass", .SetProxy = true}
+Dim cLENT As BackBlazeSDK.IClient = New BackBlazeSDK.BClient(tkn.apiUrl, tkn.authorizationToken, roxy)
 ```
 **list files/folders**
 ```vb.net
@@ -59,6 +65,6 @@ Dim prog_ReportCls As New Progress(Of BackBlazeSDK.ReportStatus)(Sub(ReportClass
                    ProgressBar1.Value = CInt(ReportClass.ProgressPercentage)
                    Label2.Text = If(CStr(ReportClass.TextStatus)
                    End Sub)
-Dim fle = Await cLENT.Upload(frm.FileName, UploadTypes.FilePath, "xxxxxxxxx", IO.Path.GetFileName(frm.FileName), prog_ReportCls , Nothing, UploadCancellationToken.Token)
+Dim fle = Await cLENT.Upload("C:\myFile.exe", UploadTypes.FilePath, "BucketID", "myFile.exe","File-Hash-SHA1", prog_ReportCls , UploadCancellationToken.Token)
 DataGridView1.Rows.Add(fle.fileName, fle.fileId, fle.contentType, fle.CreatedDate,(fle.Size))
 ```
