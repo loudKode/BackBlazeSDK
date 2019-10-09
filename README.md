@@ -1,19 +1,18 @@
-# BackBlazeSDK
-.NET API Library for BackBlaze.com
-
+## BackBlazeSDK ##
 
 `Download:`[https://github.com/loudKode/BackBlazeSDK/releases](https://github.com/loudKode/BackBlazeSDK/releases)<br>
 `NuGet:`
 [![NuGet](https://img.shields.io/nuget/v/DeQmaTech.BackBlazeSDK.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/DeQmaTech.BackBlazeSDK)<br>
 
+
 **Features**
-* Assemblies for .NET 4.5.2 and .NET Standard 2.0
+
+* Assemblies for .NET 4.5.2 and .NET Standard 2.0 and .NET Core 2.1
 * Just one external reference (Newtonsoft.Json)
 * Easy installation using NuGet
 * Upload/Download tracking support
 * Proxy Support
 * Upload/Download cancellation support
-
 
 # Functions:
 * ListBuckets
@@ -37,15 +36,19 @@
 ```vb.net
 Dim tkn = Await BackBlazeSDK.GetToken.GetToken_24Hrs("Key_ID", "Application_Key")
 ```
+
 **set client**
 ```vb.net
 Dim cLENT As BackBlazeSDK.IClient = New BackBlazeSDK.BClient(tkn.apiUrl, tkn.authorizationToken)
 ```
+
 **set client with proxy**
 ```vb.net
 Dim roxy = New BackBlazeSDK.ProxyConfig With {.ProxyIP = "172.0.0.0", .ProxyPort = 80, .ProxyUsername = "myname", .ProxyPassword = "myPass", .SetProxy = true}
-Dim cLENT As BackBlazeSDK.IClient = New BackBlazeSDK.BClient(tkn.apiUrl, tkn.authorizationToken, roxy)
+Dim conSett As New BackBlazeSDK.ConnectionSettings With {.CloseConnection = True, .TimeOut = TimeSpan.FromMinutes(60), .Proxy = roxy}
+Dim cLENT As BackBlazeSDK.IClient = New BackBlazeSDK.BClient(tkn.apiUrl, tkn.authorizationToken, conSett)
 ```
+
 **list files/folders**
 ```vb.net
 Dim RSLT = Await cLENT.List(TextBox1.Text, Nothing, Nothing, Nothing, 300)
@@ -53,10 +56,12 @@ For Each fle As BackBlazeSDK.JSON.JSON_FileMetadata In RSLT.FilesList
     DataGridView1.Rows.Add(fle.Name, fle.fileId, fle.contentType, fle.CreatedDate,(fle.Size), fle.File_Folder.ToString, fle.ParentPath)
 Next
 ```
+
 **list buckets**
 ```vb.net
 Dim RSLT = Await cLENT.ListBuckets("xxxxxxxxx")
 ```
+
 **upload local file with progress tracking**
 ```vb.net
 Dim UploadCancellationToken As New Threading.CancellationTokenSource()
