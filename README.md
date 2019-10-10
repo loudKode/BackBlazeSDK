@@ -32,44 +32,82 @@
 
 
 # Example:
-**get token**
 ```vb.net
-Dim tkn = Await BackBlazeSDK.GetToken.GetToken_24Hrs("Key_ID", "Application_Key")
+    Async Sub Get_24Hour_Token()
+        Dim tkn = Await BackBlazeSDK.GetToken.GetToken_24Hrs("ApplicationKeyID OR accountID", "ApplicationKey")
+        DataGridView1.Rows.Add(tkn.accountId, tkn.apiUrl, tkn.authorizationToken, tkn.downloadApiUrl)
+    End Sub
 ```
-
-**set client**
 ```vb.net
-Dim cLENT As BackBlazeSDK.IClient = New BackBlazeSDK.BClient(tkn.apiUrl, tkn.authorizationToken)
+    Sub SetClient()
+        Dim MyClient As BackBlazeSDK.IClient = New BackBlazeSDK.BClient("tkn.apiUrl", "tkn.authorizationToken")
+    End Sub
 ```
-
-**set client with proxy**
 ```vb.net
-Dim roxy = New BackBlazeSDK.ProxyConfig With {.ProxyIP = "172.0.0.0", .ProxyPort = 80, .ProxyUsername = "myname", .ProxyPassword = "myPass", .SetProxy = true}
-Dim conSett As New BackBlazeSDK.ConnectionSettings With {.CloseConnection = True, .TimeOut = TimeSpan.FromMinutes(60), .Proxy = roxy}
-Dim cLENT As BackBlazeSDK.IClient = New BackBlazeSDK.BClient(tkn.apiUrl, tkn.authorizationToken, conSett)
+    Sub SetClientWithOptions()
+        Dim Optians As New BackBlazeSDK.ConnectionSettings With {.CloseConnection = True, .TimeOut = TimeSpan.FromMinutes(30), .Proxy = New BackBlazeSDK.ProxyConfig With {.ProxyIP = "172.0.0.0", .ProxyPort = 80, .ProxyUsername = "myname", .ProxyPassword = "myPass", .SetProxy = True}}
+        Dim MyClient As BackBlazeSDK.IClient = New BackBlazeSDK.BClient("tkn.apiUrl", "tkn.authorizationToken", Optians)
+    End Sub
 ```
-
-**list files/folders**
 ```vb.net
-Dim RSLT = Await cLENT.List(TextBox1.Text, Nothing, Nothing, Nothing, 300)
-For Each fle As BackBlazeSDK.JSON.JSON_FileMetadata In RSLT.FilesList
-    DataGridView1.Rows.Add(fle.Name, fle.fileId, fle.contentType, fle.CreatedDate,(fle.Size), fle.File_Folder.ToString, fle.ParentPath)
-Next
+    Async Sub ListMyBuckets()
+        Dim result = Await MyClient.ListBuckets("my account Id", BucketTypesEnum.allPublic)
+        For Each vid In result.BucketsList
+            DataGridView1.Rows.Add(vid.bucketName, vid.bucketId, vid.bucketType, vid.accountId)
+        Next
+    End Sub
 ```
-
-**list buckets**
 ```vb.net
-Dim RSLT = Await cLENT.ListBuckets("xxxxxxxxx")
+    Async Sub CreateNewBucket()
+        Dim result = Await MyClient.CreateBucket("my account Id", "new bucket name", BucketTypesEnum.allPrivate)
+        DataGridView1.Rows.Add(result.bucketName, result.bucketId, result.bucketType)
+    End Sub
 ```
-
-**upload local file with progress tracking**
 ```vb.net
-Dim UploadCancellationToken As New Threading.CancellationTokenSource()
-Dim prog_ReportCls As New Progress(Of BackBlazeSDK.ReportStatus)(Sub(ReportClass As BackBlazeSDK.ReportStatus)
-                   Label1.Text = String.Format("{0}/{1}",(ReportClass.BytesTransferred),(ReportClass.TotalBytes))
-                   ProgressBar1.Value = CInt(ReportClass.ProgressPercentage)
-                   Label2.Text = If(CStr(ReportClass.TextStatus)
-                   End Sub)
-Dim fle = Await cLENT.Upload("C:\myFile.exe", UploadTypes.FilePath, "BucketID", "myFile.exe","File-Hash-SHA1", prog_ReportCls , UploadCancellationToken.Token)
-DataGridView1.Rows.Add(fle.fileName, fle.fileId, fle.contentType, fle.CreatedDate,(fle.Size))
+    Async Sub DeleteABucket()
+        Dim result = Await MyClient.DeleteBucket("my account Id", "my bucket id")
+        DataGridView1.Rows.Add(result.bucketName, result.bucketId, result.bucketType)
+    End Sub
+```
+```vb.net
+    Async Sub ListMyFiles()
+        Dim result = Await MyClient.List("bucket Id", Nothing, Nothing, Nothing, 500)
+        For Each vid In result.FilesList
+            DataGridView1.Rows.Add(vid.Name, vid.bucketId, vid.fileId, vid.Path, vid.Size)
+        Next
+    End Sub
+```
+```vb.net
+    Async Sub GetFileMetadata()
+        Dim result = Await MyClient.FileMetadata("file Id")
+        DataGridView1.Rows.Add(result.Name, result.bucketId, result.fileId, result.Path, result.Size)
+    End Sub
+```
+```vb.net
+    Async Sub DeleteAFile()
+        Dim result = Await MyClient.DeleteFile("file Id", "file name")
+        DataGridView1.Rows.Add(result)
+    End Sub
+```
+```vb.net
+    Async Sub Upload_Local_WithProgressTracking()
+        Dim UploadCancellationToken As New Threading.CancellationTokenSource()
+        Dim _ReportCls As New Progress(Of BackBlazeSDK.ReportStatus)(Sub(ReportClass As BackBlazeSDK.ReportStatus)
+                                                                         Label1.Text = String.Format("{0}/{1}", (ReportClass.BytesTransferred), (ReportClass.TotalBytes))
+                                                                         ProgressBar1.Value = CInt(ReportClass.ProgressPercentage)
+                                                                         Label2.Text = CStr(ReportClass.TextStatus)
+                                                                     End Sub)
+        Dim RSLT = Await MyClient.Upload("J:\DB\myvideo.mp4", UploadTypes.FilePath, "bucked id", "myvideo.mp4", FileHash(IO.File.ReadAllBytes("J:\DB\myvideo.mp4")), _ReportCls, UploadCancellationToken.Token)
+    End Sub
+```
+```vb.net
+    Async Sub DownloadFileLocateInPublicBucket_WithProgressTracking()
+        Dim DownloadCancellationToken As New Threading.CancellationTokenSource()
+        Dim _ReportCls As New Progress(Of BackBlazeSDK.ReportStatus)(Sub(ReportClass As BackBlazeSDK.ReportStatus)
+                                                                         Label1.Text = String.Format("{0}/{1}", (ReportClass.BytesTransferred), (ReportClass.TotalBytes))
+                                                                         ProgressBar1.Value = CInt(ReportClass.ProgressPercentage)
+                                                                         Label2.Text = CStr(ReportClass.TextStatus)
+                                                                     End Sub)
+        Await MyClient.PublicBucket_DownloadFile("file id", "J:\DB\", "myvideo.mp4", _ReportCls, DownloadCancellationToken.Token)
+    End Sub
 ```
