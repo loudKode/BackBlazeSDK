@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>BackBlazeSDK is a .Net library for BackBlaze.com file hosting service.</Description>
+    <Copyright>Copyright © 2019 DeQmaTech LLC.</Copyright>
+    <AssemblyTitle>BackBlazeSDK</AssemblyTitle>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <VersionPrefix>1.8.4</VersionPrefix>
+    <Title>BackBlazeSDK</Title>
+    <Authors>DeQmaTech LLC.</Authors>
+    <AssemblyName>BackBlazeSDK</AssemblyName>
+    <PackageProjectUrl>https://github.com/loudKode/BackBlazeSDK</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/loudKode/BackBlazeSDK/LICENSE</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>BackBlaze;netstandard;cloud-storage</PackageTags>
+    <RepositoryUrl>https://github.com/loudKode/BackBlazeSDK</RepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RootNamespace>BackBlazeSDK</RootNamespace>
+    <TargetFrameworks>netstandard2.0;netcoreapp2.1;net452</TargetFrameworks>
+  <PackageId>DeQmaTech.BackBlazeSDK</PackageId>
+  <LangVersion>7.1</LangVersion>
+  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.3" />
+    <PackageReference Include="System.Net.Http" Version="4.3.3" />
+  </ItemGroup>
+
+  <!--<PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^net\d'))">
+    <DefineConstants>NETFRAMEWORK</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^netstandard\d'))">
+    <DefineConstants>NETSTANDARD</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^netcoreapp\d'))">
+    <DefineConstants>NETCORE</DefineConstants>
+  </PropertyGroup>-->
+  
+</Project>
